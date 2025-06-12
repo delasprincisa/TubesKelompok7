@@ -7,6 +7,10 @@ exports.register = async (req, res) => {
   const role = 'orang_tua';
 
   try {
+    const [nikExists] = await db.query('SELECT nik_user FROM user WHERE nik_user = ?', [nik_user]);
+    if (nikExists.length > 0) {
+      return res.status(409).json({ message: 'NIK sudah terdaftar' });
+    }
     const [userExists] = await db.query('SELECT email FROM user WHERE email = ?', [email]);
     if (userExists.length > 0) {
       return res.status(409).json({ message: 'Email sudah terdaftar' });
