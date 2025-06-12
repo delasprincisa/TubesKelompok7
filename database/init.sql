@@ -1,0 +1,35 @@
+CREATE TABLE `user` (
+  `id_user` INT NOT NULL AUTO_INCREMENT,
+  `nik_user` VARCHAR(16) NOT NULL,
+  `nama_user` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` ENUM('petugas', 'orang_tua') NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_user`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC),
+  UNIQUE INDEX `nik_user_UNIQUE` (`nik_user` ASC)
+);
+
+CREATE TABLE `balita` (
+  `id_balita` INT NOT NULL AUTO_INCREMENT,
+  `nik_balita` VARCHAR(16) NOT NULL,
+  `nama_balita` VARCHAR(255) NOT NULL,
+  `jenis_kelamin` ENUM('L', 'P') NOT NULL,
+  `tempat_lahir` VARCHAR(100) NOT NULL,
+  `tanggal_lahir` DATE NOT NULL,
+  `alamat` TEXT NULL,
+  `nama_ibu` VARCHAR(255) NOT NULL,
+  `nik_ibu` VARCHAR(16) NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_balita`),
+  UNIQUE INDEX `nik_balita_UNIQUE` (`nik_balita` ASC),
+  INDEX `fk_balita_user_idx` (`nik_ibu` ASC),
+  CONSTRAINT `fk_balita_user`
+    FOREIGN KEY (`nik_ibu`)
+    REFERENCES `user` (`nik_user`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+);

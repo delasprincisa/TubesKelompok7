@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # Layanan Database MySQL
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: imunisasi_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' # Mengizinkan password root kosong
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
+    healthcheck: 
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Layanan Otentikasi
+  auth-service:
+    build: ./backend/auth-service
+    container_name: auth_service
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=mysql://root:@mysql_db:3306/imunisasi_db # Password dikosongkan
+      - JWT_SECRET=a30a0a6101e4ef1083705bfd6b809a6954c3f57a3a5881bb1dc6e7f4b06d6842
+      - JWT_EXPIRES_IN=1h
+      - PORT=3001
+    depends_on:
+      mysql_db: 
+        condition: service_healthy
+
+  balita-service:
+    build: ./backend/balita-service
+    container_name: balita_service
+    ports:
+      - "3002:3002"
+    environment:
+      - DATABASE_URL=mysql://root:@mysql_db:3306/imunisasi_db
+      - JWT_SECRET=a30a0a6101e4ef1083705bfd6b809a6954c3f57a3a5881bb1dc6e7f4b06d6842
+      - PORT=3002
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+
+volumes:
+  dbdata:

@@ -4,7 +4,7 @@ function App() {
   const [data, setData] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:30011/api') // This will be proxied by Kubernetes later
+    fetch('http://localhost:30011/api') 
       .then(res => res.json())
       .then(json => setData(json.message))
       .catch(err => console.error("API error:", err));
