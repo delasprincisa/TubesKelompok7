@@ -74,3 +74,4 @@ CREATE TABLE `sertifikat` (
   PRIMARY KEY (`id_sertifikat`),
   FOREIGN KEY (`id_balita`) REFERENCES `balita` (`id_balita`)
 );
+
