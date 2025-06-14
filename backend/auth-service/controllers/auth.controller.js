@@ -58,7 +58,16 @@ exports.login = async (req, res) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    res.status(200).json({ message: 'Login berhasil', token });
+    res.status(200).json({ 
+      message: 'Login berhasil',
+      token,
+      user: {
+        id_user: user.id_user,
+        nama_user: user.nama_user,
+        email: user.email,
+        role: user.role
+      } 
+    });
   } catch (error) {
     res.status(500).json({ message: 'Terjadi kesalahan pada server', error: error.message });
   }
