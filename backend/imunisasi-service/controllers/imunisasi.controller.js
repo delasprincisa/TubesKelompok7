@@ -1,13 +1,13 @@
 // imunisasi-service/controllers/imunisasi.controller.js
 
-const ImunisasiModel = require('../models/imunisasi.model'); // Import the ImunisasiModel for database interactions
+const ImunisasiModel = require('../models/imunisasi.model'); 
 const db = require('../config/database'); 
 
 /**
  * Mengambil semua data jenis vaksin
  * Hanya bisa diakses oleh user dengan role 'petugas'
- * @param {object} req - Express request object (contains req.user from middleware).
- * @param {object} res - Express response object.
+ * @param {object} req 
+ * @param {object} res 
  */
 exports.getAllVaksins = async (req, res) => {
     if (req.user.role !== 'petugas') {
@@ -25,8 +25,8 @@ exports.getAllVaksins = async (req, res) => {
 /**
  * Membuat data vaksin baru
  * Hanya bisa diakses oleh user dengan role 'petugas'
- * @param {object} req - Express request object.
- * @param {object} res - Express response object.
+ * @param {object} req 
+ * @param {object} res 
  */
 exports.createVaksin = async (req, res) => {
     if (req.user.role !== 'petugas') {
@@ -52,8 +52,8 @@ exports.createVaksin = async (req, res) => {
 /**
  * Memperbarui data vaksin berdasarkan ID
  * Hanya bisa diakses oleh user dengan role 'petugas'
- * @param {object} req - Express request object.
- * @param {object} res - Express response object.
+ * @param {object} req 
+ * @param {object} res 
  */
 exports.updateVaksin = async (req, res) => {
     if (req.user.role !== 'petugas') {
@@ -82,8 +82,8 @@ exports.updateVaksin = async (req, res) => {
 /**
  * Menghapus data vaksin berdasarkan ID
  * Hanya bisa diakses oleh user dengan role 'petugas'
- * @param {object} req - Express request object.
- * @param {object} res - Express response object.
+ * @param {object} req 
+ * @param {object} res 
  */
 exports.deleteVaksin = async (req, res) => {
     if (req.user.role !== 'petugas') {
@@ -107,8 +107,8 @@ exports.deleteVaksin = async (req, res) => {
  * Menambahkan catatan imunisasi untuk balita
  * Hanya bisa diakses oleh user dengan role 'petugas'
  * id_petugas diambil dari token pengguna yang sedang login
- * @param {object} req - Express request object.
- * @param {object} res - Express response object.
+ * @param {object} req 
+ * @param {object} res 
  */
 exports.createImunisasiRecord = async (req, res) => {
     if (req.user.role !== 'petugas') {
