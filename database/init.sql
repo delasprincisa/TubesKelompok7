@@ -65,3 +65,12 @@ CREATE TABLE `imunisasi` (
 INSERT INTO `vaksin` (`nama_vaksin`) VALUES
 ('BCG'), ('Hepatitis B'), ('Polio'), ('DPT'),
 ('Hib'), ('Campak'), ('MMR'), ('Rotavirus');
+
+CREATE TABLE `sertifikat` (
+  `id_sertifikat` INT NOT NULL AUTO_INCREMENT,
+  `id_balita` INT NOT NULL,
+  url VARCHAR(255) NOT NULL,
+  `tanggal_dibuat` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_sertifikat`),
+  FOREIGN KEY (`id_balita`) REFERENCES `balita` (`id_balita`)
+);
