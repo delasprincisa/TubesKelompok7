@@ -14,23 +14,6 @@ CREATE TABLE `user` (
   UNIQUE INDEX `nik_user_UNIQUE` (`nik_user` ASC)
 );
 
--- CREATE TABLE `balita` (
---   `id_balita` INT NOT NULL AUTO_INCREMENT,
---   `nik_balita` VARCHAR(16) NOT NULL,
---   `nama_balita` VARCHAR(255) NOT NULL,
---   `jenis_kelamin` ENUM('L', 'P') NOT NULL,
---   `tempat_lahir` VARCHAR(100) NOT NULL,
---   `tanggal_lahir` DATE NOT NULL,
---   `alamat` TEXT NULL,
---   `nama_ibu` VARCHAR(255) NOT NULL,
---   `nik_ibu` VARCHAR(16) NOT NULL,
---   `created_at` TIMESTAMP NULL DEFAULT CURCREATE TABLE vaksin (
---   id_vaksin INT NOT NULL AUTO_INCREMENT,
---   nama_vaksin VARCHAR(100) NOT NULL,
---   PRIMARY KEY (id_vaksin),
---   UNIQUE INDEX nama_vaksin_UNIQUE (nama_vaksin ASC)
---   );
--- );
 CREATE TABLE `balita` (
   `id_balita` INT NOT NULL AUTO_INCREMENT,
   `nik_balita` VARCHAR(16) NOT NULL,
