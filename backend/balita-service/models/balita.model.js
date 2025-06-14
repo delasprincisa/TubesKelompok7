@@ -15,4 +15,22 @@ Balita.findById = async (id) => {
   return rows[0];
 };
 
+Balita.findAll = async () => {
+  const [rows] = await db.query('SELECT * FROM balita');
+  return rows;
+};
+
+Balita.update = async (id, dataBalita) => {
+  const { nik_balita, nama_balita, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, nama_ibu, nik_ibu } = dataBalita;
+  await db.query(
+    'UPDATE balita SET nik_balita=?, nama_balita=?, jenis_kelamin=?, tempat_lahir=?, tanggal_lahir=?, alamat=?, nama_ibu=?, nik_ibu=? WHERE id_balita=?',
+    [nik_balita, nama_balita, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, nama_ibu, nik_ibu, id]
+  );
+  return { id_balita: id, ...dataBalita };
+};
+
+Balita.delete = async (id) => {
+  await db.query('DELETE FROM balita WHERE id_balita = ?', [id]);
+};
+
 module.exports = Balita;

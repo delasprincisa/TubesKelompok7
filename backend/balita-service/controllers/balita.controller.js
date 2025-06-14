@@ -31,3 +31,47 @@ exports.getBalitaById = async (req, res) => {
     res.status(500).json({ message: 'Gagal mengambil data balita', error: error.message });
   }
 };
+
+exports.getAllBalita = async (req, res) => {
+  if (req.user.role !== 'petugas') {
+    return res.status(403).json({ message: 'Akses ditolak: hanya untuk petugas' });
+  }
+  try {
+    const data = await Balita.findAll();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Gagal mengambil data balita', error: error.message });
+  }
+};
+
+exports.updateBalita = async (req, res) => {
+  try {
+    const existing = await Balita.findById(req.params.id_balita);
+    if (!existing) return res.status(404).json({ message: 'Data tidak ditemukan' });
+
+    if (req.user.role !== 'petugas') {
+      return res.status(403).json({ message: 'Akses ditolak: hanya untuk petugas' });
+    }
+
+    const updated = await Balita.update(req.params.id_balita, req.body);
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: 'Gagal mengupdate data balita', error: error.message });
+  }
+};
+
+exports.deleteBalita = async (req, res) => {
+  try {
+    const existing = await Balita.findById(req.params.id_balita);
+    if (!existing) return res.status(404).json({ message: 'Data tidak ditemukan' });
+
+    if (req.user.role !== 'petugas') {
+      return res.status(403).json({ message: 'Akses ditolak: hanya untuk petugas' });
+    }
+
+    await Balita.delete(req.params.id_balita);
+    res.json({ message: 'Data berhasil dihapus' });
+  } catch (error) {
+    res.status(500).json({ message: 'Gagal menghapus data balita', error: error.message });
+  }
+};
