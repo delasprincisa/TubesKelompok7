@@ -57,7 +57,7 @@ CREATE TABLE `vaksin` (
   `id_vaksin` INT NOT NULL AUTO_INCREMENT,
   `nama_vaksin` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id_vaksin`),
-  UNIQUE INDEX `nama_vaksin_UNIQUE` (`nama_vaksin` ASC)
+  UNIQUE INDEX `nama_vaksin_UNIQUE` (`nama_vaksin`)
 );
 
 CREATE TABLE `imunisasi` (
