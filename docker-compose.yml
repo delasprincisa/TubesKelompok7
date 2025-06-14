@@ -1,4 +1,4 @@
-#version: '3.8'
+version: '3.8'
 
 services:
   # Layanan Database MySQL
@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: imunisasi_db
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' # Mengizinkan password root kosong
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
       - ./database:/docker-entrypoint-initdb.d
@@ -46,40 +46,6 @@ services:
     depends_on:
       mysql_db:
         condition: service_healthy
-
-  # Layanan Imunisasi
-  imunisasi-service:
-    build: ./backend/imunisasi-service
-    container_name: imunisasi_service
-    ports:
-      - "3003:3003" # HOST_PORT:CONTAINER_PORT (3003 di server.js)
-    environment:
-      - DATABASE_URL=mysql://root:@mysql_db:3306/imunisasi_db
-      - JWT_SECRET=a30a0a6101e4ef1083705bfd6b809a6954c3f57a3a5881bb1dc6e7f4b06d6842
-      - PORT=3003
-    depends_on:
-      mysql_db:
-        condition: service_healthy
-      auth-service:
-        condition: service_started
-
-  # Layanan Generate Sertifikat
-  sertifikat-service:
-    build: ./backend/sertifikat-service
-    container_name: sertifikat_service
-    ports:
-      - "3004:3004" 
-    environment:
-      - DATABASE_URL=mysql://root:@mysql_db:3306/imunisasi_db
-      - JWT_SECRET=a30a0a6101e4ef1083705bfd6b809a6954c3f57a3a5881bb1dc6e7f4b06d6842
-      - PORT=3004
-    volumes:
-      - ./backend/sertifikat-service/public/certificates:/app/public/certificates
-    depends_on:
-      mysql_db:
-        condition: service_healthy
-      imunisasi-service:
-        condition: service_started
 
 volumes:
   dbdata:
