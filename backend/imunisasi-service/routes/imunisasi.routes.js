@@ -14,10 +14,10 @@ router.put('/vaksins/:id', imunisasiController.updateVaksin);
 router.delete('/vaksins/:id', imunisasiController.deleteVaksin);
 
 // Rute untuk Manajemen Catatan Imunisasi 
-router.post('/records', imunisasiController.createImunisasiRecord);
-router.get('/records/balita/:id_balita', imunisasiController.getImunisasiRecordsByBalitaId);
-router.get('/records/:id_imunisasi', imunisasiController.getImunisasiRecordById);
-router.put('/records/:id_imunisasi', imunisasiController.updateImunisasiRecord);
+router.post('/records', imunisasiController.createImunisasiRecord); // Catat imunisasi Balita role "petugas"
+router.get('/records/balita/:id_balita', imunisasiController.getImunisasiRecordsByBalitaId); // get records imunisasi berdasrkan id_balita role "petugas dan ortu"
+router.get('/records/:id_imunisasi', imunisasiController.getImunisasiRecordById); // get records imunisasi berdasarkan id_imunisasi role "petugas dan ortu"
+router.put('/records/:id_imunisasi', imunisasiController.updateImunisasiRecord); // 
 router.delete('/records/:id_imunisasi', imunisasiController.deleteImunisasiRecord);
 
 // Rute untuk Pengecekan Kelengkapan Vaksin
