@@ -69,9 +69,17 @@ INSERT INTO `vaksin` (`nama_vaksin`) VALUES
 CREATE TABLE `sertifikat` (
   `id_sertifikat` INT NOT NULL AUTO_INCREMENT,
   `id_balita` INT NOT NULL,
+<<<<<<< HEAD
   `url` VARCHAR(255) NOT NULL,
   `tanggal_dibuat` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_sertifikat`),
   FOREIGN KEY (`id_balita`) REFERENCES `balita` (`id_balita`)
 );
 
+=======
+  url VARCHAR(255) NOT NULL,
+  `tanggal_dibuat` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_sertifikat`),
+  FOREIGN KEY (`id_balita`) REFERENCES `balita` (`id_balita`)
+);
+>>>>>>> f5cb0d3e435fbb9661a08f867a70c1626a3dd757
