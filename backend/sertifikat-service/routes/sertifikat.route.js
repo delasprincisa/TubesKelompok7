@@ -1,8 +1,8 @@
 const express = require('express');
-
 const router = express.Router();
-const { generateSertifikat } = require('../controllers/sertifikat.controller');
+const sertifikatController = require('../controllers/sertifikat.controller');
+const verifyToken = require('../middlewares/auth.middleware');
 
-router.get('/:id_balita', generateSertifikat);
+router.get('/generate/:id_balita', verifyToken, sertifikatController.generateSertifikat);
 
 module.exports = router;
