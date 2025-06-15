@@ -15,6 +15,11 @@ Balita.findById = async (id) => {
   return rows[0];
 };
 
+Balita.findByNikIbu = async (nik_ibu) => {
+  const [rows] = await db.query('SELECT * FROM balita WHERE nik_ibu = ?', [nik_ibu]);
+  return rows;
+};
+
 Balita.findAll = async () => {
   const [rows] = await db.query('SELECT * FROM balita');
   return rows;

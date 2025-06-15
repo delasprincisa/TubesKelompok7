@@ -32,6 +32,22 @@ exports.getBalitaById = async (req, res) => {
   }
 };
 
+exports.getBalitaByNikIbu = async (req, res) => {
+  const nik_ibu = req.params.nik_ibu;
+
+  // Hanya petugas atau ibu itu sendiri yang bisa akses
+  if (req.user.role !== 'petugas' && req.user.nik_user !== nik_ibu) {
+    return res.status(403).json({ message: 'Akses ditolak' });
+  }
+
+  try {
+    const data = await Balita.findByNikIbu(nik_ibu);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Gagal mengambil data balita', error: error.message });
+  }
+};
+
 exports.getAllBalita = async (req, res) => {
   if (req.user.role !== 'petugas') {
     return res.status(403).json({ message: 'Akses ditolak: hanya untuk petugas' });
