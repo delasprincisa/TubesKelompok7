@@ -13,7 +13,7 @@ exports.createBalita = async (req, res) => {
   }
 };
 
-// Bisa diakses petugas atau orang tua yang bersangkutan
+//Bisa diakses petugas atau orang tua yang bersangkutan
 exports.getBalitaById = async (req, res) => {
   try {
     const balita = await Balita.findById(req.params.id_balita);
@@ -47,6 +47,8 @@ exports.getBalitaByNikIbu = async (req, res) => {
     res.status(500).json({ message: 'Gagal mengambil data balita', error: error.message });
   }
 };
+
+
 
 exports.getAllBalita = async (req, res) => {
   if (req.user.role !== 'petugas') {
