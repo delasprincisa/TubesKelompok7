@@ -50,8 +50,8 @@ exports.generateSertifikat = async (req, res) => {
 
     // 6. Simpan URL ke tabel sertifikat
     await db.query(
-      `INSERT INTO sertifikat (id_balita, nik_ibu, url) VALUES (?, ?, ?)`,
-      [balita.id_balita, balita.nik_ibu, fileUrl]
+    `INSERT INTO sertifikat (id_balita, nik_ibu, url) VALUES (?, ?, ?)`,
+    [balita.id_balita, balita.nik_ibu, fileUrl]
     );
 
     return res.status(200).json({ message: 'Sertifikat berhasil dibuat.', url: fileUrl });
