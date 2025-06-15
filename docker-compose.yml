@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: imunisasi_db
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' # Mengizinkan password root kosong
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - dbdata:/var/lib/mysql
       - ./database:/docker-entrypoint-initdb.d
