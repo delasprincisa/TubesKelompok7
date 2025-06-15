@@ -1,22 +1,28 @@
 const db = require('../config/database');
 
-// Cek imunisasi status (kalau id balita tersebut di cek sudah memenuhi baru nanti pdf fi generate)
+// 
 exports.checkImunisasiStatus = async (id_balita) => {
-  const [rows] = await db.query(
-    `SELECT status FROM imunisasi WHERE id_balita = ?`,
+  // Ambil semua id vaksin dari tabel vaksin
+  const [allVaksin] = await db.query(`SELECT id_vaksin FROM vaksin`);
+
+  // Ambil semua id vaksin yang sudah diberikan ke balita ini
+  const [balitaVaksin] = await db.query(
+    `SELECT DISTINCT id_vaksin FROM imunisasi WHERE id_balita = ?`,
     [id_balita]
   );
 
-  if (!rows || rows.length === 0) {
-    return { status: 'incomplete' };
-  }
+  // Ubah hasil ke bentuk Set untuk pengecekan cepat
+  const semuaIdVaksin = new Set(allVaksin.map(v => v.id_vaksin));
+  const vaksinBalita = new Set(balitaVaksin.map(v => v.id_vaksin));
 
-  const isComplete = rows.every(row => row.status === 'completed');
+  // Bandingkan, apakah semua id_vaksin sudah ada di vaksinBalita
+  const isComplete = [...semuaIdVaksin].every(v => vaksinBalita.has(v));
 
   return {
     status: isComplete ? 'completed' : 'incomplete'
   };
 };
+
 
 // Cek data balita untuk dimasukkan ke sertifikat
 exports.getBalitaDetails = async (id_balita) => {
