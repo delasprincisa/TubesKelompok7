@@ -48,7 +48,7 @@ services:
         condition: service_healthy
 
   imunisasi-service:
-    build: ./imunisasi-service
+    build: ./backend/imunisasi-service
     container_name: imunisasi_service
     ports:
       - "3003:3003"
@@ -61,7 +61,7 @@ services:
         condition: service_healthy
 
   sertifikat-service:
-    build: ./sertifikat-service
+    build: ./backend/sertifikat-service
     container_name: sertifikat_service
     ports:
       - "3004:3004"
