@@ -7,7 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3002;
 
 app.use(express.json());
-app.use('/', balitaRoutes);
+//app.use('/', balitaRoutes);
+app.use('/balita', balitaRoutes);
 
 app.listen(PORT, () => {
   console.log(`Balita Service berjalan pada port ${PORT}`);
