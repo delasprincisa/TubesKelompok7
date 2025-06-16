@@ -13,8 +13,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', sertifikatRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Sertifikat Service berjalan pada port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`Sertifikat Service berjalan pada port ${PORT}`);
 });
 
-server.setTimeout(1200000); 
+server.setTimeout(60000); 

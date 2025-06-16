@@ -69,17 +69,14 @@ INSERT INTO `vaksin` (`nama_vaksin`) VALUES
 CREATE TABLE `sertifikat` (
   `id_sertifikat` INT NOT NULL AUTO_INCREMENT,
   `id_balita` INT NOT NULL,
-<<<<<<< HEAD
-  `url` VARCHAR(255) NOT NULL,
-  `tanggal_dibuat` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `url_sertifikat` VARCHAR(255) NOT NULL,
+  `tanggal_terbit` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_sertifikat`),
-  FOREIGN KEY (`id_balita`) REFERENCES `balita` (`id_balita`)
+  UNIQUE INDEX `id_balita_UNIQUE` (`id_balita` ASC),
+  CONSTRAINT `fk_sertifikat_to_balita`
+    FOREIGN KEY (`id_balita`)
+    REFERENCES `balita` (`id_balita`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
-=======
-  url VARCHAR(255) NOT NULL,
-  `tanggal_dibuat` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_sertifikat`),
-  FOREIGN KEY (`id_balita`) REFERENCES `balita` (`id_balita`)
-);
->>>>>>> f5cb0d3e435fbb9661a08f867a70c1626a3dd757
