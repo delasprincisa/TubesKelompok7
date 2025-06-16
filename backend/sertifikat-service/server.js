@@ -16,3 +16,5 @@ app.use('/', sertifikatRoutes);
 app.listen(PORT, () => {
     console.log(`Sertifikat Service berjalan pada port ${PORT}`);
 });
+
+server.setTimeout(1200000); 
