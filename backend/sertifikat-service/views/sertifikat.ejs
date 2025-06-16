@@ -4,27 +4,43 @@
   <meta charset="utf-8">
   <title>Sertifikat Imunisasi</title>
   <style>
-    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 40px; border: 5px solid #4a90e2; padding: 20px; text-align: center; }
-    h1 { color: #4a90e2; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #ccf9ee;margin: 40px; padding: 20px; text-align: center; }
+    h1 { color: #096d56; border-bottom: 2px solid #096d56; padding-bottom: 10px; }
+    .ket { margin-top: 30px; text-align: center;}
     .content { margin-top: 30px; text-align: left; }
     .field { margin-bottom: 15px; font-size: 16px; }
     .label { font-weight: bold; width: 180px; display: inline-block; }
-    .footer { margin-top: 50px; font-style: italic; color: #555; }
+    .footer { margin-top: 50px; font-style: italic; color: #555; text-align: center; }
+
+    .sertifikat {
+      border: 4px solid #004d40;
+      padding: 40px;
+      width: 700px;
+      background-color: #fff;
+      text-align: center;
+    }
+
   </style>
 </head>
 <body>
-  <h1>SERTIFIKAT IMUNISASI DASAR LENGKAP</h1>
-  <div class="content">
+  <div class="sertifikat">
+    <h1>SERTIFIKAT IMUNISASI DASAR LENGKAP</h1>
+  <div class="ket" >
     <p>Dengan ini menyatakan bahwa:</p>
+  </div>
+  <div class="content">
     <div class="field"><span class="label">Nama</span>: <%= balita.nama_balita %></div>
     <div class="field"><span class="label">NIK</span>: <%= balita.nik_balita %></div>
     <div class="field"><span class="label">Jenis Kelamin</span>: <%= balita.jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' %></div>
     <div class="field"><span class="label">Tempat, Tgl Lahir</span>: <%= balita.tempat_lahir %>, <%= new Date(balita.tanggal_lahir).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></div>
+  </div>
+  <div class="ket">
     <p>Telah menerima seluruh rangkaian imunisasi dasar wajib dengan status <strong>LENGKAP</strong>.</p>
   </div>
   <div class="footer">
-    <p>Sertifikat ini diterbitkan secara digital oleh Naka.</p>
+    <p>Sertifikat ini diterbitkan secara digital oleh Medical Care 7.</p>
     <p>Tanggal Terbit: <%= new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
+  </div>
   </div>
 </body>
 </html>
