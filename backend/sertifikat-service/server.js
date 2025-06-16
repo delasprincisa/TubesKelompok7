@@ -17,4 +17,5 @@ app.listen(PORT, () => {
     console.log(`Sertifikat Service berjalan pada port ${PORT}`);
 });
 
-server.setTimeout(1200000); 
+// server.setTimeout(1200000); 
+server.setTimeout(60000); // 1 menit

@@ -23,20 +23,36 @@ exports.generateSertifikat = async (req, res) => {
 
         // --- LOGIKA BARU MENGGUNAKAN PUPPETEER ---
 
-        // 3. Generate HTML dari template EJS
-        const templatePath = path.join(__dirname, '../views/sertifikat.ejs');
-        const html = await ejs.renderFile(templatePath, { balita });
+        // // 3. Generate HTML dari template EJS
+        // const templatePath = path.join(__dirname, '../views/sertifikat.ejs');
+        // const html = await ejs.renderFile(templatePath, { balita });
 
-        // 4. Buat PDF menggunakan Puppeteer
-        const browser = await puppeteer.launch({ 
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-            args: [
-              '--no-sandbox', 
-              '--disable-setuid-sandbox',
-              '--disable-dev-shm-usage'
-            ], 
-            protocolTimeout: 1200000
-        });
+        // // 4. Buat PDF menggunakan Puppeteer
+        // const browser = await puppeteer.launch({ 
+        //     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+        //     args: [
+        //       '--no-sandbox', 
+        //       '--disable-setuid-sandbox',
+        //       '--disable-dev-shm-usage'
+        //     ], 
+        //     protocolTimeout: 1200000
+        // });
+
+const browser = await puppeteer.launch({ 
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    headless: 'new', // Tambahkan ini
+    args: [
+      '--no-sandbox', 
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',                    // Tambahkan
+      '--disable-web-security',           // Tambahkan
+      '--disable-background-timer-throttling' // Tambahkan
+    ], 
+    timeout: 30000,        // 30 detik (bukan 20 menit!)
+    protocolTimeout: 60000 // 1 menit (bukan 20 menit!)
+});
+
         const page = await browser.newPage();
         await page.setContent(html, { waitUntil: 'networkidle0' });
         const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
