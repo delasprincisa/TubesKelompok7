@@ -4,6 +4,9 @@ const puppeteer = require('puppeteer'); // Ganti html-pdf dengan puppeteer
 const SertifikatModel = require('../models/sertifikat.model');
 const ApiService = require('../services/api.service');
 
+const templatePath = path.join(__dirname, '../views/sertifikat.ejs'); // perubahan
+const html = await ejs.renderFile(templatePath, { balita }); // perubahan
+
 exports.generateSertifikat = async (req, res) => {
     try {
         const { id_balita } = req.params;
