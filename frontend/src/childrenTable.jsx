@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./ChildrenTable.css"; // Pastikan file CSS ini ada
+import "./ChildrenTable.css";
 
 function ChildrenTable() {
   const [children, setChildren] = useState([]);
@@ -10,7 +10,7 @@ function ChildrenTable() {
   useEffect(() => {
     const fetchChildrenDataAndStatus = async () => {
       const token = localStorage.getItem("token");
-      const userNik = localStorage.getItem("userNik"); // NIK Ibu yang login
+      const userNik = localStorage.getItem("userNik");
 
       if (!token) {
         setError("Token tidak ditemukan. Anda tidak terautentikasi.");
@@ -29,7 +29,6 @@ function ChildrenTable() {
         const balitaResponse = await fetch(
           `http://localhost:3002/balita/ibu/${userNik}`,
           {
-            // Menggunakan port 3002 untuk service Balita
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -54,17 +53,15 @@ function ChildrenTable() {
 
         setChildren(balitaData);
 
-        // 2. Untuk setiap balita, panggil endpoint check-completion dari Service Imunisasi (Port 3003)
-        // Ini hanya untuk mendapatkan status, tanpa efek samping PDF generation.
+        // 2. Untuk setiap balita, panggil endpoint CHECK-COMPLETION dari Service Imunisasi (Port 3003)
         const statusPromises = balitaData.map(async (child) => {
           const statusResult = { id: child.id_balita, status: "unknown" };
 
           try {
-            // PANGGIL ENDPOINT CHECK-COMPLETION DENGAN PORT 3003
             const response = await fetch(
               `http://localhost:3003/imunisasi/check-completion/${child.id_balita}`,
               {
-                method: "GET", // Menggunakan GET
+                method: "GET",
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: `Bearer ${token}`,
@@ -72,23 +69,40 @@ function ChildrenTable() {
               }
             );
 
-            const data = await response.json();
-
-            if (response.ok && data.status) {
-              statusResult.status = data.status; // Ambil status dari respons
+            let data = {};
+            try {
+              data = await response.json();
+            } catch (jsonError) {
+              console.error(
+                "Failed to parse JSON response for status check:",
+                jsonError
+              );
+              data = { message: "Respons bukan JSON yang valid atau kosong." };
+            }
+            // Ini adalah bagian yang mengambil 'status' dari respons imunisasi service.
+            if (
+              response.ok &&
+              (data.status === "completed" || data.status === "incomplete")
+            ) {
+              statusResult.status = data.status;
+              if (data.status === "incomplete" && data.missing_vaksins) {
+                statusResult.message = `Vaksin yang belum lengkap: ${data.missing_vaksins.join(
+                  ", "
+                )}`;
+              }
             } else if (response.status === 403) {
-              // Akses ditolak (jika bukan petugas atau ibu balita)
               statusResult.status = "unauthorized";
               statusResult.message =
                 data.message || "Akses ditolak untuk status ini.";
             } else if (response.status === 404) {
-              // Balita tidak ditemukan
               statusResult.status = "not_found";
               statusResult.message = data.message || "Balita tidak ditemukan.";
             } else {
               console.error(
                 `Error fetching completion status for balita ID ${child.id_balita}:`,
-                data.message || response.statusText
+                `HTTP Status: ${response.status}`,
+                `Server Message: ${data.message || response.statusText}`,
+                `Server Error Details: ${data.error || "N/A"}`
               );
               statusResult.status = "error";
               statusResult.message =
@@ -97,7 +111,8 @@ function ChildrenTable() {
           } catch (err) {
             console.error(
               `Network error when checking completion status for balita ID ${child.id_balita}:`,
-              err
+              `Message: ${err.message}`,
+              `Code: ${err.code || "N/A"}`
             );
             statusResult.status = "error";
             statusResult.message = "Kesalahan jaringan saat memeriksa status.";
@@ -142,29 +157,36 @@ function ChildrenTable() {
     )?.nama_balita;
 
     if (currentStatus === "completed") {
-      // Ini adalah saat kita memanggil generateSertifikat untuk MEMBUAT dan MENGUNDUH PDF
+      // Ketika status 'completed', panggil endpoint untuk GENERATE dan SIMPAN sertifikat
       try {
-        // PANGGIL ENDPOINT GENERATE SERTIFIKAT DENGAN PORT 3004 DAN METODE GET (sesuai routes Anda)
+        // Endpoint untuk MENGGENERASI dan MENYIMPAN PDF (mengembalikan URL)
+        // Ini sesuai dengan rute '/generate/:id_balita' di sertifikat-service.
         const response = await fetch(
-          `http://localhost:3004/sertifikat/${childId}`,
+          `http://localhost:3004/generate/${childId}`, // Panggil endpoint generate
           {
-            // Sesuai router.get('/:id_balita') di sertifikat.route.js
-            method: "GET", // <-- MENGGUNAKAN GET SESUAI PERMINTAAN TERAKHIR
+            method: "GET", // Sesuai dengan route GET /generate/:id_balita.
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json", // Pastikan header ini sesuai jika server mengharapkannya
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        const data = await response.json();
+
+        const data = await response.json(); // Mengasumsikan server mengembalikan JSON dengan 'url'
 
         if (response.ok && data.url) {
-          // Jika berhasil, controller mengembalikan url
+          // Jika sukses dan ada URL
           alert(data.message || `Sertifikat ${childName} berhasil dibuat.`);
-          window.open(`http://localhost:3004${data.url}`, "_blank"); // Buka PDF
+          // Sekarang gunakan URL yang dikembalikan server untuk mendownload file statis
+          // Pastikan http://localhost:3004 adalah base URL untuk file statis
+          window.open(`http://localhost:3004${data.url}`, "_blank");
         } else {
-          // Ini akan menangani kasus jika generateSertifikat merespons 400 karena belum lengkap (meskipun status sudah dicek),
-          // atau error lain dari service sertifikat.
+          // Penanganan error jika respons bukan ok atau tidak ada URL
+          console.error(
+            `Error generating/downloading certificate for balita ID ${childId}:`,
+            `Status: ${response.status}`,
+            `Message: ${data.message || response.statusText}`
+          );
           alert(
             `Gagal membuat/mendapatkan sertifikat: ${
               data.message || "Terjadi kesalahan."
@@ -173,7 +195,7 @@ function ChildrenTable() {
         }
       } catch (err) {
         console.error(
-          "Error saat memicu pembuatan/pengunduhan sertifikat:",
+          "Terjadi kesalahan jaringan saat memicu pembuatan sertifikat:",
           err
         );
         alert(
@@ -196,7 +218,6 @@ function ChildrenTable() {
           currentMessage || "Coba lagi nanti."
         }`
       );
-      // Anda bisa coba panggil ulang API untuk balita ini jika status unknown/error
     }
   };
 
@@ -225,7 +246,6 @@ function ChildrenTable() {
       <tbody>
         {children.map((child) => {
           const statusInfo = imunisasiStatusMap[child.id_balita];
-          // Defaultkan ke 'loading' jika status belum diambil
           const displayStatus = statusInfo ? statusInfo.status : "loading";
 
           return (
@@ -249,14 +269,12 @@ function ChildrenTable() {
               </td>
               <td>
                 <button
-                  // Kelas tombol berdasarkan status kelengkapan
                   className={
                     displayStatus === "completed"
                       ? "download-button"
                       : "incomplete-button"
                   }
                   onClick={() => handleActionButtonClick(child.id_balita)}
-                  // Tombol dinonaktifkan jika status tidak memungkinkan aksi
                   disabled={
                     displayStatus === "loading" ||
                     displayStatus === "error" ||
@@ -265,7 +283,6 @@ function ChildrenTable() {
                     displayStatus === "not_found"
                   }
                 >
-                  {/* Teks tombol berdasarkan status kelengkapan */}
                   {displayStatus === "completed"
                     ? "Download Sertifikat"
                     : "Lengkapi Vaksin"}

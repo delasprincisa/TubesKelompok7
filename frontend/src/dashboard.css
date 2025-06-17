@@ -5,14 +5,14 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #e6f7ff;
+  background-color: #ace1d3;
   font-family: Arial, sans-serif;
   padding: 20px;
   box-sizing: border-box;
 }
 
 .dashboard-container h1 {
-  color: #0056b3;
+  color: #096d56;
   margin-bottom: 20px;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .children-section {
-  background: #ffffff;
+  background: #65ccb4;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
