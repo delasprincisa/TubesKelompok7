@@ -139,7 +139,6 @@ exports.createImunisasiRecord = async (req, res) => {
 /**
  * Mengambil semua catatan imunisasi berdasarkan ID balita
  * Bisa diakses oleh: 'petugas' (semua balita) 
- * Requires fetching balita info from Balita Service (conceptual, for proper authorization).
  * @param {object} req 
  * @param {object} res 
  */
@@ -187,9 +186,6 @@ exports.getImunisasiRecordById = async (req, res) => {
         if (!record) {
             return res.status(404).json({ message: 'Catatan imunisasi tidak ditemukan.' });
         }
-
-        // Konseptual: Sekali lagi, untuk peran 'orang_tua', Anda memerlukan nik_ibu balita.
-        // Dengan asumsi tabel balita dapat diakses atau data diambil.
         const [balitaResult] = await db.query('SELECT nik_ibu FROM balita WHERE id_balita = ?', [record.id_balita]);
         const balita = balitaResult[0];
 
@@ -219,7 +215,7 @@ exports.updateImunisasiRecord = async (req, res) => {
         return res.status(403).json({ message: 'Akses ditolak: Hanya untuk petugas.' });
     }
     const { id_imunisasi } = req.params;
-    const { id_balita, id_vaksin, dokter, tanggal_diberikan } = req.body; // Can update any of these fields
+    const { id_balita, id_vaksin, dokter, tanggal_diberikan } = req.body;
 
     try {
         const updated = await ImunisasiModel.updateImunisasi(id_imunisasi, {

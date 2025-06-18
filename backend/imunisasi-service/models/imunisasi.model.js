@@ -16,9 +16,9 @@ ImunisasiModel.findAllVaksins = async () => {
 
 /**
  * Menambah jenis vaksin baru ke tabel 'vaksin'.
- * @param {string} nama_vaksin - Nama vaksin yang akan ditambahkan.
- * @returns {object} Objek vaksin yang baru dibuat dengan id_vaksin.
- * @throws {Error} Jika nama vaksin sudah terdaftar atau terjadi kesalahan database.
+ * @param {string} nama_vaksin 
+ * @returns {object}
+ * @throws {Error} 
  */
 ImunisasiModel.createVaksin = async (nama_vaksin) => {
     try {
@@ -34,10 +34,10 @@ ImunisasiModel.createVaksin = async (nama_vaksin) => {
 
 /**
  * Memperbarui nama vaksin berdasarkan ID.
- * @param {number} id_vaksin - ID unik dari vaksin yang akan diperbarui.
- * @param {string} nama_vaksin - Nama baru untuk vaksin.
- * @returns {boolean} True jika pembaruan berhasil, false jika tidak ada vaksin dengan ID tersebut.
- * @throws {Error} Jika nama vaksin baru sudah terdaftar (pada vaksin lain) atau error database lainnya.
+ * @param {number} id_vaksin 
+ * @param {string} nama_vaksin 
+ * @returns {boolean} 
+ * @throws {Error} 
  */
 ImunisasiModel.updateVaksin = async (id_vaksin, nama_vaksin) => {
     try {
@@ -53,8 +53,8 @@ ImunisasiModel.updateVaksin = async (id_vaksin, nama_vaksin) => {
 
 /**
  * Menghapus jenis vaksin berdasarkan ID.
- * @param {number} id_vaksin - ID unik dari vaksin yang akan dihapus.
- * @returns {boolean} True jika penghapusan berhasil, false jika tidak ada vaksin dengan ID tersebut.
+ * @param {number} id_vaksin 
+ * @returns {boolean} 
  */
 ImunisasiModel.deleteVaksin = async (id_vaksin) => {
     const [result] = await db.query('DELETE FROM vaksin WHERE id_vaksin = ?', [id_vaksin]);
@@ -66,9 +66,9 @@ ImunisasiModel.deleteVaksin = async (id_vaksin) => {
 
 /**
  * Menambah catatan imunisasi baru untuk balita.
- * @param {object} dataImunisasi - Objek yang berisi data imunisasi (id_balita, id_vaksin, id_petugas, dokter, tanggal_diberikan).
- * @returns {object} Objek catatan imunisasi yang baru dibuat dengan id_imunisasi.
- * @throws {Error} Jika terjadi kesalahan database.
+ * @param {object} dataImunisasi 
+ * @returns {object} 
+ * @throws {Error} 
  */
 ImunisasiModel.createImunisasi = async (dataImunisasi) => {
     const { id_balita, id_vaksin, id_petugas, dokter, tanggal_diberikan } = dataImunisasi;
@@ -86,8 +86,8 @@ ImunisasiModel.createImunisasi = async (dataImunisasi) => {
 /**
  * Mengambil semua catatan imunisasi untuk balita tertentu.
  * Melakukan JOIN dengan tabel 'vaksin' untuk mendapatkan nama vaksin.
- * @param {number} id_balita - ID balita.
- * @returns {Array<object>} Array berisi catatan imunisasi balita tersebut.
+ * @param {number} id_balita 
+ * @returns {Array<object>} 
  */
 ImunisasiModel.findImunisasiByBalitaId = async (id_balita) => {
     const [rows] = await db.query(
@@ -103,8 +103,8 @@ ImunisasiModel.findImunisasiByBalitaId = async (id_balita) => {
 /**
  * Mengambil satu catatan imunisasi berdasarkan ID.
  * Melakukan JOIN dengan tabel 'vaksin' untuk mendapatkan nama vaksin.
- * @param {number} id_imunisasi - ID catatan imunisasi.
- * @returns {object|undefined} Objek catatan imunisasi jika ditemukan, atau undefined.
+ * @param {number} id_imunisasi 
+ * @returns {object|undefined}
  */
 ImunisasiModel.findImunisasiById = async (id_imunisasi) => {
     const [rows] = await db.query(
@@ -119,14 +119,12 @@ ImunisasiModel.findImunisasiById = async (id_imunisasi) => {
 
 /**
  * Memperbarui catatan imunisasi berdasarkan ID.
- * @param {number} id_imunisasi - ID catatan imunisasi yang akan diperbarui.
- * @param {object} dataImunisasi - Objek data imunisasi yang akan diperbarui.
- * @returns {boolean} True jika pembaruan berhasil, false jika tidak ada catatan dengan ID tersebut.
+ * @param {number} id_imunisasi 
+ * @param {object} dataImunisasi 
+ * @returns {boolean} 
  */
 ImunisasiModel.updateImunisasi = async (id_imunisasi, dataImunisasi) => {
     const { id_balita, id_vaksin, dokter, tanggal_diberikan } = dataImunisasi;
-    // Note: id_petugas tidak diperbolehkan diupdate langsung melalui ini, karena seharusnya ditetapkan saat pembuatan.
-    // Jika perlu diupdate, tambahkan ke sini atau buat method terpisah.
     const [result] = await db.query(
         'UPDATE imunisasi SET id_balita = ?, id_vaksin = ?, dokter = ?, tanggal_diberikan = ? WHERE id_imunisasi = ?',
         [id_balita, id_vaksin, dokter, tanggal_diberikan, id_imunisasi]
@@ -136,8 +134,8 @@ ImunisasiModel.updateImunisasi = async (id_imunisasi, dataImunisasi) => {
 
 /**
  * Menghapus catatan imunisasi berdasarkan ID.
- * @param {number} id_imunisasi - ID catatan imunisasi yang akan dihapus.
- * @returns {boolean} True jika penghapusan berhasil, false jika tidak ada catatan dengan ID tersebut.
+ * @param {number} id_imunisasi 
+ * @returns {boolean} 
  */
 ImunisasiModel.deleteImunisasi = async (id_imunisasi) => {
     const [result] = await db.query('DELETE FROM imunisasi WHERE id_imunisasi = ?', [id_imunisasi]);
@@ -158,8 +156,8 @@ const VAKSIN_WAJIB = [
 
 /**
  * Mengecek apakah balita telah menerima semua vaksin wajib.
- * @param {number} id_balita - ID balita yang akan dicek.
- * @returns {object} Objek yang menunjukkan status kelengkapan dan daftar vaksin yang hilang (jika ada).
+ * @param {number} id_balita 
+ * @returns {object} 
  */
 ImunisasiModel.checkImunisasiCompletion = async (id_balita) => {
     const [receivedVaksins] = await db.query(
