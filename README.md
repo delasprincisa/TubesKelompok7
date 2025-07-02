@@ -2,7 +2,7 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 
-Ini adalah Proyek Akhir untuk mata kuliah Orientasi Service, yang mengimplementasikan sebuah sistem manajemen data imunisasi balita menggunakan **Arsitektur Microservices**.
+Ini adalah Proyek Akhir untuk mata kuliah Service Oriented Software Development (SOSD), yang mengimplementasikan sebuah sistem manajemen data imunisasi balita menggunakan **Arsitektur Microservices**.
 
 ## 📝 Deskripsi Proyek
 
