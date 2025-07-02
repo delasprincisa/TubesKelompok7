@@ -89,7 +89,7 @@ Proyek Anda sekarang berjalan! Anda bisa mulai melakukan pengujian API menggunak
 
 ## 👥 Kontribusi Tim
 
--   **Ketua Tim & Auth Gateway Service**: Delas 
+-   **Ketua Tim, Arsitektur Sistem, Auth Service**: Delas 
 -   **Analisis & Imunisasi Service**: Diva
 -   **Balita Service**: Chintia
 -   **Sertifikat Service**: Rafa
