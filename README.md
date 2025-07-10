@@ -31,7 +31,7 @@ Semua layanan ini berjalan sebagai container Docker dan berkomunikasi satu sama 
 ## 🛠️ Teknologi yang Digunakan
 
 -   **Backend**: Node.js, Express.js
--   **Database**: MySQL (atau PostgreSQL)
+-   **Database**: MySQL
 -   **Containerization**: Docker, Docker Compose
 -   **Orkestrasi**: Kubernetes
 -   **Keamanan**: JSON Web Token (JWT), bcryptjs
